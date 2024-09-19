@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: saudacao-service
+saudacao-service:
+  saudacao: Hola
+  nome-padrao: Mundo
