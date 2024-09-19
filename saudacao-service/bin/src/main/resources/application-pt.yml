@@ -3,7 +3,7 @@ spring:
     name: saudacao-service
   profiles:
     active:
-    - es
+    - it
 saudacao-service:
-  saudacao: Hello
-  nome-padrao: World
+  saudacao: Olá
+  nome-padrao: Mundo
