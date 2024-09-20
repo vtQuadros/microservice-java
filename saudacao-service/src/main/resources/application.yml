@@ -10,3 +10,9 @@ spring:
 saudacao-service:
   saudacao: Hello
   nome-padrao: World
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*'
