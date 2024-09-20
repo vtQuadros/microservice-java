@@ -8,5 +8,11 @@ spring:
           uri: https://github.com/ViitorQuadros/microservice-java.git
           search-paths:
           - Configs/{application}
+management:
+  endpoints:
+    web:
+     exposure:
+       include:
+       - '*'
 server:
   port: 8888
