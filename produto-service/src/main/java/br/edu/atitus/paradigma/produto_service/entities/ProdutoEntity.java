@@ -1,7 +1,5 @@
 package br.edu.atitus.paradigma.produto_service.entities;
 
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,17 +10,16 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "produto")
 public class ProdutoEntity {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	
 	private Integer id;
 	
 	private String marca;
 	private String modelo;
 	private double valor;
 	
-	@Transient //Indica que esse atributo não faz parte da tabela do DB
+	@Transient // Indica que esse atributo não faz parete da tabela para o DB
 	private String ambiente;
 
 	public Integer getId() {
@@ -69,4 +66,5 @@ public class ProdutoEntity {
 	
 	
 	
+
 }

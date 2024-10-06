@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 import br.edu.atitus.paradigma.produto_service.entities.ProdutoEntity;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Integer> {
+public interface ProdutoRepository extends JpaRepository<ProdutoEntity, Integer>{
 
-	
-	
 	
 }
