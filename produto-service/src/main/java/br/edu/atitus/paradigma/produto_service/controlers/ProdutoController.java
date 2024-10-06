@@ -8,10 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.atitus.paradigma.produto_service.entities.ProdutoEntity;
+import br.edu.atitus.paradigma.produto_service.repositories.ProdutoRepository;
 
 @RestController
 @RequestMapping("produto-service")
 public class ProdutoController {
+	
+	private final ProdutoRepository produtoRepository;
+	
+	public ProdutoController(ProdutoRepository produtoRepository) {
+		super();
+		this.produtoRepository = produtoRepository;
+	}
 	
 	@Value("${server.port}")
 	private int porta;
@@ -20,10 +28,10 @@ public class ProdutoController {
 	@GetMapping("/{idProduto}/{moeda}")
 	public ResponseEntity<ProdutoEntity> getProduto(
 			@PathVariable Integer idProduto,
-			@PathVariable String moeda){
+			@PathVariable String moeda) throws Exception{
 		
 		
-		ProdutoEntity produto = new ProdutoEntity();
+		ProdutoEntity produto = produtoRepository.findById(idProduto).orElseThrow(() -> new Exception(" Produto não encontrado"));
 		
 		produto.setAmbiente("Produto-service run in port: " + porta);
 		
@@ -31,5 +39,8 @@ public class ProdutoController {
 				
 		
 	}
+
+
+	
 	
 }
