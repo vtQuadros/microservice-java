@@ -1,7 +1,9 @@
 package br.edu.atitus.paradigma.produto_service.controlers;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,12 +37,15 @@ public class ProdutoController {
 		
 		produto.setAmbiente("Produto-service run in port: " + porta);
 		
-		return ResponseEntity.ok(produto);
-				
+		return ResponseEntity.ok(produto);		
 		
 	}
 
-
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> handleExeption(Exception e){
+		String cleanMessage = e.getMessage().replaceAll("[\\r\\n]", "");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(cleanMessage);
+	}
 	
 	
 }
