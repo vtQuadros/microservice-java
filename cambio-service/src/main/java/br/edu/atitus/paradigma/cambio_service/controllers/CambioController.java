@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.atitus.paradigma.cambio_service.clients.CotacaoClient;
+import br.edu.atitus.paradigma.cambio_service.clients.CotacaoResponse;
 import br.edu.atitus.paradigma.cambio_service.entities.CambioEntity;
 import br.edu.atitus.paradigma.cambio_service.repositories.CambioRepository;
 
@@ -17,10 +19,12 @@ import br.edu.atitus.paradigma.cambio_service.repositories.CambioRepository;
 public class CambioController {
 
 	private final CambioRepository cambioRepository;
-
-	public CambioController(CambioRepository cambioRepository) {
+	private final CotacaoClient cotacaoClient;
+	
+	public CambioController(CambioRepository cambioRepository, CotacaoClient cotacaoClient) {
 		super();
 		this.cambioRepository = cambioRepository;
+		this.cotacaoClient = cotacaoClient;
 	}
 	
 	@Value("${server.port}")
@@ -32,8 +36,25 @@ public class CambioController {
 			@PathVariable String origem,
 			@PathVariable String destino) throws Exception {
 		
-		CambioEntity cambio = cambioRepository.findByOrigemAndDestino(origem, destino)
-				.orElseThrow(() -> new Exception("Câmbio não encontrado para esta origem e destino"));
+		// CambioEntity cambio = cambioRepository.findByOrigemAndDestino(origem, destino)
+			//	.orElseThrow(() -> new Exception("Câmbio não encontrado para esta origem e destino"));
+		
+		CambioEntity cambio = new CambioEntity();
+		cambio.setOrigem(origem);
+		cambio.setDestino(destino);
+		double fator;
+		CotacaoResponse CotacaoOrigem = cotacaoClient.getCotacao(origem, "10-17-2024");
+		double fatorOrigem = CotacaoOrigem.getValue().get(0).getCotacaoVenda();
+		
+		if (destino.equals("BRL")) {
+			fator = fatorOrigem;
+		} else {
+			CotacaoResponse cotacaoDestino = cotacaoClient.getCotacao(destino, "10-17-2024");
+			double fatorDestino = cotacaoDestino.getValue().get(0).getCotacaoVenda();
+			fator = fatorOrigem / fatorDestino;
+		}
+		
+		cambio.setFator(fator);
 		
 		cambio.setValorConvertido(valor * cambio.getFator());
 		cambio.setAmbiente("Cambio-Service run in port: " + porta);
