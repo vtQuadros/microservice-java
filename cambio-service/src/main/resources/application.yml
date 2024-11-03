@@ -31,3 +31,15 @@ management:
       exposure:
         include:
         - '*'
+resilience4j:
+  circuitbreaker:
+    instances:
+      cotacaoClient:
+        register-health-indicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+       
