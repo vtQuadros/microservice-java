@@ -1,5 +1,5 @@
 server:
- port: 8100
+  port: 8100
 spring:
   application:
     name: cambio-service
@@ -12,11 +12,15 @@ spring:
       ddl-auto: none
     show-sql: true
     properties:
-      hibernate: 
-        format-sql: true
+      hibernate:
+        format_sql: true
   flyway:
     locations:
     - classpath:/db_migration
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=10m
 eureka:
   client:
     service-url:
@@ -25,6 +29,7 @@ eureka:
       enabled: true
   instance:
     prefer-ip-address: true
+
 management:
   endpoints:
     web:
@@ -42,4 +47,4 @@ resilience4j:
         waitDurationInOpenState: 10s
         permittedNumberOfCallsInHalfOpenState: 3
         automatic-transition-from-open-to-half-open-enabled: true
-       
+      
